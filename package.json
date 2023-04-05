@@ -1,0 +1,19 @@
+{
+  "name": "fullstackopen-part3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Conner-Berg/fullstackopen-part3.git"
+  },
+  "author": "Conner Berg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Conner-Berg/fullstackopen-part3/issues"
+  },
+  "homepage": "https://github.com/Conner-Berg/fullstackopen-part3#readme"
+}
