@@ -5,9 +5,9 @@ const app = express();
 const cors = require("cors");
 const Person = require("./models/person");
 
+app.use(express.static("build"));
 app.use(express.json());
 app.use(cors());
-app.use(express.static("build"));
 
 morgan.token("payload", (request) => {
 	if (
@@ -67,10 +67,9 @@ app.post("/api/people", (request, response) => {
 });
 
 app.delete("/api/people/:id", (request, response) => {
-	const id = Number(request.params.id);
-	people = people.filter((person) => person.id !== id);
-
-	response.status(204).end();
+	Person.findByIdAndRemove(request.params.id).then((result) => {
+		response.status(204).end();
+	});
 });
 
 app.get("/info", (request, response) => {
