@@ -45,17 +45,11 @@ app.get("/api/people/:id", (request, response) => {
 	}
 });
 
-app.post("/api/people", (request, response) => {
+app.post("/api/people", (request, response, next) => {
 	const body = request.body;
 
 	if (body.name === undefined) {
 		return response.status(400).json({ error: "name missing" });
-	}
-
-	const existingPerson = people.find((person) => person.name === body.name);
-
-	if (existingPerson) {
-		return response.status(400).json({ error: "name must be unique" });
 	}
 
 	const person = new Person({
@@ -67,6 +61,21 @@ app.post("/api/people", (request, response) => {
 		.save()
 		.then((savedPerson) => {
 			response.json(savedPerson);
+		})
+		.catch((error) => next(error));
+});
+
+app.put("/api/people/:id", (request, response, next) => {
+	const body = request.body;
+
+	const person = {
+		name: body.name,
+		number: body.number,
+	};
+
+	Person.findByIdAndUpdate(request.params.id, person, { new: true })
+		.then((updatedPerson) => {
+			response.json(updatedPerson);
 		})
 		.catch((error) => next(error));
 });
