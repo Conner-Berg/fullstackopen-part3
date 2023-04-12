@@ -50,6 +50,12 @@ app.post("/api/people", (request, response) => {
 		return response.status(400).json({ error: "name missing" });
 	}
 
+	const existingPerson = people.find((person) => person.name === body.name);
+
+	if (existingPerson) {
+		return response.status(400).json({ error: "name must be unique" });
+	}
+
 	const person = new Person({
 		name: body.name,
 		number: body.number,
