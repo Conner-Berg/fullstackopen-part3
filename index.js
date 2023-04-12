@@ -35,14 +35,15 @@ app.get("/api/people", (request, response) => {
 });
 
 app.get("/api/people/:id", (request, response) => {
-	const id = Number(request.params.id);
-	const person = people.find((person) => person.id === id);
-
-	if (person) {
-		response.json(person);
-	} else {
-		response.status(404).end();
-	}
+	Person.findById(request.params.id)
+		.then((person) => {
+			if (person) {
+				response.json(person);
+			} else {
+				response.status(404).end();
+			}
+		})
+		.catch((error) => next(error));
 });
 
 app.post("/api/people", (request, response, next) => {
@@ -89,11 +90,15 @@ app.delete("/api/people/:id", (request, response, next) => {
 });
 
 app.get("/info", (request, response) => {
-	const date = new Date();
-	response.send(
-		`<p>Phonebook has info for ${people.length} people</p>
-				<p>${date}</p>`
-	);
+	Person.find({})
+		.then((people) => {
+			response.send(
+				`<p>Phonebook has info for ${
+					people.length
+				} people</p><p>${new Date()}</p>`
+			);
+		})
+		.catch((error) => next(error));
 });
 
 const unknownEndpoint = (request, response) => {
