@@ -26,7 +26,7 @@ app.use(
 	)
 );
 
-app.get("/api/people", (request, response) => {
+app.get("/api/people", (request, response, next) => {
 	Person.find({})
 		.then((people) => {
 			response.json(people);
@@ -34,7 +34,7 @@ app.get("/api/people", (request, response) => {
 		.catch((error) => next(error));
 });
 
-app.get("/api/people/:id", (request, response) => {
+app.get("/api/people/:id", (request, response, next) => {
 	Person.findById(request.params.id)
 		.then((person) => {
 			if (person) {
@@ -83,13 +83,13 @@ app.put("/api/people/:id", (request, response, next) => {
 
 app.delete("/api/people/:id", (request, response, next) => {
 	Person.findByIdAndRemove(request.params.id)
-		.then((result) => {
+		.then(() => {
 			response.status(204).end();
 		})
 		.catch((error) => next(error));
 });
 
-app.get("/info", (request, response) => {
+app.get("/info", (request, response, next) => {
 	Person.find({})
 		.then((people) => {
 			response.send(
